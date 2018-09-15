@@ -6,32 +6,32 @@ typedef struct node{
     struct node * right;
 }arvore;
 
-void adicionar(arvore * tree, int n){
-    if (tree->info == 0){
-        tree->info = n;
+arvore * createTree(int info){
+    arvore *root;
+    root = malloc(sizeof(arvore));
+    root->info = info;
+    root->left = NULL;
+    root->right = NULL;
+    return(root);
+}
+
+
+
+
+
+arvore * adicionar(arvore * tree, int n){
+    if (tree == 0){
+        return(createTree(n));
     }else{
         if (n < tree->info){
-            if (tree->left!=NULL){
-                adicionar(tree->left,n);
-            }else{
-                tree->left = malloc(sizeof(arvore));
-                tree->left->info = n;
-                tree->left->left = NULL;
-                tree->left->right= NULL;
-            }
+            tree->left = adicionar(tree->left,n);
         }else{
-            if (n > tree->info){
-            if (tree->right != NULL){
-                adicionar(tree->right,n);
-            }else{
-                tree->right=malloc(sizeof(arvore));
-                tree->right->info = n;
-                tree->right->left = NULL;
-                tree->right->left = NULL;
-            }
-        }}
+            tree -> right = adicionar(tree->right,n);
+        }
     }
+    return(tree);
 }
+
 void prefixo(arvore * n){
     if (n!= NULL){
         printf(" %d",n->info);
@@ -57,15 +57,13 @@ void posfixo (arvore * n){
 int main(){
     int C,N,temp,i,j;
     scanf("%d",&C);
-    arvore * test = malloc(sizeof(arvore));
+    arvore * test = NULL;
     for(i=1;i<=C;i++){
         scanf("%d",&N);
-        test->info = 0;
-        test->left = NULL;
-        test->right = NULL;
+        test = NULL;
         for(j=0;j<N;j++){
             scanf("%d",&temp);
-            adicionar(test,temp);
+            test = adicionar(test,temp);
         }
         printf("Case %d:\nPre.:",i);
         prefixo(test);
